@@ -1,0 +1,15 @@
+{
+  "name": "kit",
+  "version": "0.0.1",
+  "description": "kit ORM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://ifs@saturn.o.2fp.net/~/data/git/kit.git"
+  },
+  "author": "",
+  "license": "BSD"
+}
