@@ -43,6 +43,6 @@
     }
   });
 
-  console.log(project.getValues());
+  console.log(project.author.email);
 
 }());
