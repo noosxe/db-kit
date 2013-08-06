@@ -3,13 +3,19 @@
   "version": "0.0.1",
   "description": "kit ORM",
   "main": "index.js",
+  "dependencies": {
+    "underscore":"1.5.x",
+    "inflection":"1.2.x",
+    "pg":"2.3.x",
+    "async": "0.2.x"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/index.js"
   },
   "repository": {
     "type": "git",
     "url": "ssh://ifs@saturn.o.2fp.net/~/data/git/kit.git"
   },
   "author": "",
-  "license": "BSD"
+  "license": ""
 }
