@@ -10,7 +10,8 @@
     email: {
       type: kit.types.STRING,
       null: false,
-      readOnly: true
+      readOnly: true,
+      unique: true
     },
     password: {
       type: kit.types.STRING,
@@ -27,6 +28,7 @@
     },
     author: {
       type: kit.types.INT,
+      null: false,
       reference: {
         entity: User,
         field: 'id'
@@ -43,6 +45,12 @@
     }
   });
 
-  console.log(project.author.email);
+  User.sync(function() {
+
+  });
+
+  Project.sync(function() {
+
+  });
 
 }());
