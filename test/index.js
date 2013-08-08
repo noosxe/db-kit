@@ -45,11 +45,7 @@
     }
   });
 
-  User.sync(function() {
-
-  });
-
-  Project.sync(function() {
+  kit.sync(function() {
 
   });
 
