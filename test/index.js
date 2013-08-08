@@ -9,13 +9,13 @@
   var User = kit.define('user', {
     email: {
       type: kit.types.STRING,
-      null: false,
+      required: true,
       readOnly: true,
       unique: true
     },
     password: {
       type: kit.types.STRING,
-      null: false
+      required: true
     },
     firstName: kit.types.STRING,
     lastName: kit.types.STRING
@@ -24,11 +24,11 @@
   var Project = kit.define('project', {
     name: {
       type: kit.types.STRING,
-      null: false
+      required: true
     },
     author: {
       type: kit.types.INT,
-      null: false,
+      required: true,
       reference: {
         entity: User,
         field: 'id'
@@ -37,16 +37,15 @@
     }
   });
 
-  var project = Project.build({
-    name: 'My project',
-    author: {
-      email: 'levon@toort.net',
-      password: 'bacon'
-    }
+  var user = User.build({
+    email: 'levon@toort.net',
+    password: 'bacon',
+    firstName: 'Levon',
+    lastName: 'Kirakosyan'
   });
 
-  kit.sync(function() {
-
+  user.save(function(err, id) {
+    console.log(id);
   });
 
 }());
