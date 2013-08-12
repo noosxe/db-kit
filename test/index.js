@@ -44,13 +44,16 @@
     firstName: 'Levon',
     lastName: 'Kirakosyan'
   });
+
+  console.log(user.toJson());
 /*
   user.save(function(err, id) {
     console.log(id);
   });
 */
+/*
   User.find({}, function(err, users) {
     console.log(users);
   });
-
+*/
 }());

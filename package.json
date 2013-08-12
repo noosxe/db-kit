@@ -6,7 +6,6 @@
   "dependencies": {
     "underscore":"1.5.x",
     "inflection":"1.2.x",
-    "pg":"2.3.x",
     "async": "0.2.x"
   },
   "scripts": {
