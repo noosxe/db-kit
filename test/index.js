@@ -45,15 +45,15 @@
     lastName: 'Kirakosyan'
   });
 
-  console.log(user.toJson());
+//  kit.sync();
 /*
   user.save(function(err, id) {
     console.log(id);
   });
 */
-/*
-  User.find({}, function(err, users) {
+
+  User.find({fields: ['email'] }, function(err, users) {
     console.log(users);
   });
-*/
+
 }());
