@@ -37,14 +37,26 @@
       readOnly:true
     }
   });
-
+/*
   var user = User.build({
     email: 'levon@toort.net',
     password: 'bacon',
     firstName: 'Levon',
     lastName: 'Kirakosyan'
   });
+*/
+  var otherUser = User.build({
+    email: 'human@example.com',
+    password: 'paaass'
+  });
 
+  console.log(otherUser);
+
+/*
+  otherUser.save(function(err, id) {
+    console.log(id);
+  });
+*/
 //  kit.sync();
 /*
   user.save(function(err, id) {
@@ -52,8 +64,8 @@
   });
 */
 
-  User.find({fields: [['email','em']] }, function(err, users) {
-    console.log(users);
-  });
+//  User.find({}, function(err, users) {
+//    console.log(users);
+//  });
 
 }());
