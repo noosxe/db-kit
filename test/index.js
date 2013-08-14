@@ -63,9 +63,10 @@
  */
 //  kit.sync();
 
-
   User.find({ where: { email: {like:'levon%'} } }, function(err, users) {
-    console.log(users);
+    users[0].delete(function(err) {
+
+    });
   });
 
 }());
