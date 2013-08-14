@@ -45,27 +45,27 @@
     lastName: 'Kirakosyan'
   });
 */
+/*
   var otherUser = User.build({
     email: 'human@example.com',
     password: 'paaass'
   });
-
-  console.log(otherUser);
-
+*/
 /*
   otherUser.save(function(err, id) {
     console.log(id);
   });
 */
-//  kit.sync();
 /*
   user.save(function(err, id) {
     console.log(id);
   });
-*/
+ */
+//  kit.sync();
 
-//  User.find({}, function(err, users) {
-//    console.log(users);
-//  });
+
+  User.find({ where: { email: {like:'levon%'} } }, function(err, users) {
+    console.log(users);
+  });
 
 }());
