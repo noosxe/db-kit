@@ -52,7 +52,7 @@
   });
 */
 
-  User.find({fields: ['email'] }, function(err, users) {
+  User.find({fields: [['email','em']] }, function(err, users) {
     console.log(users);
   });
 

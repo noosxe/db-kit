@@ -1,6 +1,6 @@
 (function () {
-    "use strict";
+  "use strict";
 
-    module.exports = require('./lib/kit');
+  module.exports = require('./lib/kit');
 
 }());
