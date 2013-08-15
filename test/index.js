@@ -37,7 +37,7 @@
       readOnly:true
     }
   });
-/*
+
   var project = Project.build({
     name: 'Other Project',
     author: {
@@ -49,13 +49,9 @@
   });
 
   project.save(function(err, id) {
-
+    Project.find({ join:['author'], limit:1 }, function(err, projects) {
+      console.log(projects[0].toString());
+      console.log(projects[0].author.toString());
+    });
   });
-*/
-
-
-  Project.find({ limit:1, offset:1 }, function(err, projects) {
-    console.log(projects[0].toString());
-  });
-
 }());
