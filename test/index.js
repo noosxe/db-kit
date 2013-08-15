@@ -38,19 +38,18 @@
     }
   });
 
-  var user = User.build({
-    email: 'levon@toort.net',
-    password: 'bacon',
-    firstName: 'Levon',
-    lastName: 'Kirakosyan'
+  var project = Project.build({
+    name: 'My Project',
+    author: {
+      email: 'levon@toort.net',
+      password: 'bacon',
+      firstName: 'Levon',
+      lastName: 'Kirakosyan'
+    }
   });
 
-  user.save(function(err, id) {
-    User.find({ where: { email: {like:'levon%'} } }, function(err, users) {
-      users[0].delete(function(err) {
-        console.log(err);
-      });
-    });
+  project.save(function(err, id) {
+
   });
 
 }());
