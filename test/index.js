@@ -37,19 +37,25 @@
       readOnly:true
     }
   });
-
+/*
   var project = Project.build({
-    name: 'My Project',
+    name: 'Other Project',
     author: {
-      email: 'levon@toort.net',
-      password: 'bacon',
-      firstName: 'Levon',
-      lastName: 'Kirakosyan'
+      email: 'admin@toort.net',
+      password: 'password',
+      firstName: 'Admin',
+      lastName: 'Toort'
     }
   });
 
   project.save(function(err, id) {
 
+  });
+*/
+
+
+  Project.find({ limit:1, offset:1 }, function(err, projects) {
+    console.log(projects[0].toString());
   });
 
 }());
