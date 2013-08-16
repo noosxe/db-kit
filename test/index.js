@@ -38,6 +38,11 @@
     }
   });
 
+  Project.update({name: {like: 'Other%'}}, {name: 'ppproject'}, function(err) {
+
+  });
+
+/*
   var project = Project.build({
     name: 'Other Project',
     author: {
@@ -47,11 +52,19 @@
       lastName: 'Toort'
     }
   });
+*/
 
+
+/*
   project.save(function(err, id) {
-    Project.find({ join:['author'], limit:1 }, function(err, projects) {
-      console.log(projects[0].toString());
-      console.log(projects[0].author.toString());
-    });
+
+     Project.find({ join:['author'], limit:1 }, function(err, projects) {
+     console.log(projects[0].toString());
+     console.log(projects[0].author.toString());
+     });
+
   });
+*/
+
+
 }());
