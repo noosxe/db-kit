@@ -38,8 +38,8 @@
     }
   });
 
-  Project.update({name: {like: 'Other%'}}, {name: 'ppproject'}, function(err) {
-
+  Project.update({name: {like: 'My%'}}, {name: 'ppproject'}, function(err, changes) {
+    console.log(changes);
   });
 
 /*
@@ -54,7 +54,6 @@
   });
 */
 
-
 /*
   project.save(function(err, id) {
 
@@ -65,6 +64,5 @@
 
   });
 */
-
 
 }());
