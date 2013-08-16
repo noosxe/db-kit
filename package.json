@@ -8,12 +8,16 @@
     "inflection":"1.2.x",
     "async": "0.2.x"
   },
+  "devDependencies": {
+    "vows": "0.7.x",
+    "assert": "0.4.x"
+  },
   "scripts": {
     "test": "node test/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "ssh://ifs@saturn.o.2fp.net/~/data/git/kit.git"
+    "url": "https://github.com/noosxe/kit.git"
   },
   "author": "",
   "license": ""
