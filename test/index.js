@@ -78,16 +78,19 @@
     }
   });
 
-  console.log(project.toString());
-/*
-  project.save(function(err, id) {
+  kit.sync(function() {
 
-     Project.find({ join:['author'], limit:1 }, function(err, projects) {
-     console.log(projects[0].toString());
-     console.log(projects[0].author.toString());
-     });
+//    project.save(function(err, id) {
+
+      Project.find({ join:['author', 'office'], limit:1 }, function(err, projects) {
+        console.log(projects[0].toString());
+//      console.log(projects[0].author.toString());
+      });
+
+//    });
 
   });
-*/
+
+
 
 }());
