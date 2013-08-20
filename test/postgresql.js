@@ -130,6 +130,39 @@ vows.describe('kit').addBatch({
         assert.equal(topic.fieldType('firstName'), topic.getOptions().kit.types.STRING);
         assert.equal(topic.fieldType('lastName'), topic.getOptions().kit.types.STRING);
         assert.equal(topic.fieldType('birthDate'), topic.getOptions().kit.types.DATE);
+      },
+
+      'reference': {
+        topic: function(User, kit) {
+          return kit.define('project', {
+            name: {
+              type: kit.types.STRING,
+              required: true
+            },
+            author: {
+              type: kit.types.INT,
+              required: true,
+              reference: {
+                entity: User,
+                field: 'id'
+              },
+              readOnly:true
+            }
+          });
+        },
+
+        'is reference': function(topic) {
+          assert.isTrue(topic.isReference('author'));
+        },
+        'reference is defined': function(topic) {
+          assert.isNotNull(topic.getReference('author'));
+        },
+        'has one dependency - *User*': function(topic) {
+          var deps = topic.getDependencies();
+          assert.isArray(deps);
+          assert.lengthOf(deps, 1);
+          assert.equal(deps[0].getModelName(), 'user');
+        }
       }
     }
   }
