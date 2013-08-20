@@ -6,6 +6,22 @@
       debug: true
   });
 
+  var Office = kit.define('office', {
+    address: {
+      type: kit.types.STRING,
+      required: true,
+      readOnly: true
+    },
+    rooms: {
+      type: kit.types.INT,
+      required: true
+    },
+    employees: {
+      type: kit.types.INT,
+      required: true
+    }
+  });
+
   var User = kit.define('user', {
     email: {
       type: kit.types.STRING,
@@ -35,14 +51,18 @@
         field: 'id'
       },
       readOnly:true
+    },
+    office: {
+      type: kit.types.INT,
+      required: true,
+      reference: {
+        entity: Office,
+        field: 'id'
+      }
     }
   });
 
-  Project.update({name: {like: 'My%'}}, {name: 'ppproject'}, function(err, changes) {
-    console.log(changes);
-  });
 
-/*
   var project = Project.build({
     name: 'Other Project',
     author: {
@@ -50,10 +70,15 @@
       password: 'password',
       firstName: 'Admin',
       lastName: 'Toort'
+    },
+    office: {
+      address: 'Street 3, building 2',
+      rooms: 2,
+      employees: 15
     }
   });
-*/
 
+  console.log(project.toString());
 /*
   project.save(function(err, id) {
 
