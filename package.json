@@ -13,7 +13,7 @@
     "assert": "0.4.x"
   },
   "scripts": {
-    "test": "node test/index.js"
+    "test": "vows test/* --spec"
   },
   "repository": {
     "type": "git",
