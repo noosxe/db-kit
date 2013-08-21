@@ -6,6 +6,21 @@
       debug: true
   });
 
+  var Server = kit.define('server', {
+    model: {
+      type: kit.types.STRING,
+      required: true
+    },
+    memory: {
+      type: kit.types.INT,
+      required: true
+    },
+    storage: {
+      type: kit.types.INT,
+      required: true
+    }
+  });
+
   var Office = kit.define('office', {
     address: {
       type: kit.types.STRING,
@@ -19,6 +34,14 @@
     employees: {
       type: kit.types.INT,
       required: true
+    },
+    server: {
+      type: kit.types.INT,
+      required: true,
+      reference: {
+        entity: Server,
+        field: 'id'
+      }
     }
   });
 
@@ -62,7 +85,6 @@
     }
   });
 
-
   var project = Project.build({
     name: 'Other Project',
     author: {
@@ -74,23 +96,27 @@
     office: {
       address: 'Street 3, building 2',
       rooms: 2,
-      employees: 15
+      employees: 15,
+      server: {
+        model: 'cool server',
+        memory: 64,
+        storage: 4000
+      }
     }
   });
 
-  kit.sync(function() {
+//  kit.sync(function() {
 
 //    project.save(function(err, id) {
 
-      Project.find({ join:['author', 'office'], limit:1 }, function(err, projects) {
-        console.log(projects[0].toString());
-//      console.log(projects[0].author.toString());
+      Project.find({ join:['author', 'office', 'office.server'], limit:1 }, function(err, projects) {
+        if (!err && projects.length > 0) {
+          console.log(projects[0].toString());
+        }
       });
 
 //    });
 
-  });
-
-
+//  });
 
 }());
