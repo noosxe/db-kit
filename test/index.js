@@ -1,6 +1,7 @@
 (function () {
   "use strict";
 
+  var util = require('util');
   var Kit = require('../index.js');
   var kit = new Kit('kit', 'postgres', '', {
       debug: true
@@ -86,21 +87,21 @@
   });
 
   var project = Project.build({
-    name: 'Other Project',
+    name: 'Big Project',
     author: {
-      email: 'admin@toort.net',
+      email: 'manager@toort.net',
       password: 'password',
-      firstName: 'Admin',
+      firstName: 'Manager',
       lastName: 'Toort'
     },
     office: {
-      address: 'Street 3, building 2',
-      rooms: 2,
-      employees: 15,
+      address: 'Street 153, building 82',
+      rooms: 10,
+      employees: 500,
       server: {
-        model: 'cool server',
-        memory: 64,
-        storage: 4000
+        model: 'cloud',
+        memory: 15000,
+        storage: 80000
       }
     }
   });
@@ -109,9 +110,10 @@
 
 //    project.save(function(err, id) {
 
-      Project.find({ join:['author', 'office', 'office.server'], limit:1 }, function(err, projects) {
+      Project.find({ join:['author', 'office', 'office.server'], order:['project.name ASC'] }, function(err, projects) {
         if (!err && projects.length > 0) {
           console.log(projects[0].toString());
+          console.log(projects[1].toString());
         }
       });
 
