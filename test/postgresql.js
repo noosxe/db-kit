@@ -85,7 +85,7 @@ vows.describe('kit').addBatch({
         assert.equal(topic.getModelName(), 'user');
       },
       'table name is users': function(topic) {
-        assert.equal(topic.getTableName(), 'users');
+        assert.equal(topic.getTableName(), 'user');
       },
       'returns field names': function(topic) {
         var fieldNames = topic.getFieldNames();
