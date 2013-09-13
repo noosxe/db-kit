@@ -7,118 +7,26 @@
       debug: true
   });
 
-  var Server = kit.define('server', {
-    model: {
-      type: kit.types.STRING,
-      required: true
-    },
-    memory: {
-      type: kit.types.INT,
-      required: true
-    },
-    storage: {
-      type: kit.types.INT,
-      required: true
-    }
-  });
-
-  var Office = kit.define('office', {
-    address: {
-      type: kit.types.STRING,
-      required: true,
-      readOnly: true
-    },
-    rooms: {
-      type: kit.types.INT,
-      required: true
-    },
-    employees: {
-      type: kit.types.INT,
-      required: true
-    },
-    server: {
-      type: kit.types.INT,
-      required: true,
-      reference: {
-        entity: Server,
-        field: 'id'
-      }
-    }
-  });
-
   var User = kit.define('user', {
-    email: {
-      type: kit.types.STRING,
-      required: true,
-      readOnly: true,
-      unique: true
-    },
-    password: {
-      type: kit.types.STRING,
-      required: true,
-      hidden: true
-    },
-    firstName: kit.types.STRING,
-    lastName: kit.types.STRING
+    email: { type: kit.types.STRING, required: true, unique: true },
+    password: { type: kit.types.STRING, required: true },
+    firstName: { type: kit.types.STRING },
+    lastName: { type: kit.types.STRING }
+  }, {
+    tableName: 'users'
   });
 
-  var Project = kit.define('project', {
-    name: {
-      type: kit.types.STRING,
-      required: true
-    },
-    author: {
-      type: kit.types.INT,
-      required: true,
-      reference: {
-        entity: User,
-        field: 'id'
-      },
-      readOnly:true
-    },
-    office: {
-      type: kit.types.INT,
-      required: true,
-      reference: {
-        entity: Office,
-        field: 'id'
-      }
-    }
+  var UserPhoto = kit.define('userPhoto', {
+    user: { type: kit.types.INT, required: true, reference: { entity: User, field: 'id' } },
+    url: { type: kit.types.STRING, required: true }
+  }, {
+    tableName: 'userPhotos'
   });
 
-  var project = Project.build({
-    name: 'Big Project',
-    author: {
-      email: 'manager@toort.net',
-      password: 'password',
-      firstName: 'Manager',
-      lastName: 'Toort'
-    },
-    office: {
-      address: 'Street 153, building 82',
-      rooms: 10,
-      employees: 500,
-      server: {
-        model: 'cloud',
-        memory: 15000,
-        storage: 80000
-      }
-    }
+  User.addOptions({ beforeDelete: { deleteReferringFrom: { entity: UserPhoto, field: 'user' } } });
+
+  kit.sync(function() {
+
   });
-
-//  kit.sync(function() {
-
-//    project.save(function(err, id) {
-
-      Project.find({ join:['author', 'office', 'office.server'], order:['project.name ASC'] }, function(err, projects) {
-        if (!err && projects.length > 0) {
-          console.log(projects[0].toString());
-          console.log(projects[1].toString());
-        }
-      });
-
-//    });
-
-//  });
 
 }());
