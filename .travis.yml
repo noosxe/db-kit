@@ -1,0 +1,13 @@
+language: node_js
+
+node_js:
+  - "0.10"
+
+services: PostgreSQL
+
+before_script:
+  - psql -c 'create database kit;' -U postgres
+
+branches:
+  only:
+    - v0.0.2
