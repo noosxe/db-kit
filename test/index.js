@@ -1,32 +1,27 @@
-(function () {
+(function() {
   "use strict";
 
-  var util = require('util');
   var Kit = require('../index.js');
-  var kit = new Kit('kit', 'postgres', '', {
-      debug: true
+
+  var kit = new Kit({
+    connString: 'postgres://postgres:@localhost:5432/kit',
+    native: true,
+    debug: true
   });
 
-  var User = kit.define('user', {
+  var User = kit.define('User', {
     email: { type: kit.types.STRING, required: true, unique: true },
     password: { type: kit.types.STRING, required: true },
-    firstName: { type: kit.types.STRING },
-    lastName: { type: kit.types.STRING }
+    firstName: kit.types.STRING,
+    lastName: kit.types.STRING,
+    birthDate: { type: kit.types.DATE, required: true },
+    gender: { type: kit.types.enum('gender', ['male', 'female']), required: true }
   }, {
-    tableName: 'users'
+    timestamps: true
   });
 
-  var UserPhoto = kit.define('userPhoto', {
-    user: { type: kit.types.INT, required: true, reference: { entity: User, field: 'id' } },
-    url: { type: kit.types.STRING, required: true }
-  }, {
-    tableName: 'userPhotos'
-  });
-
-  User.addOptions({ beforeDelete: { deleteReferringFrom: { entity: UserPhoto, field: 'user' } } });
-
-  kit.sync(function() {
-
+  User.sync().on('done', function(model) {
+    console.log(model);
   });
 
 }());

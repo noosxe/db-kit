@@ -4,18 +4,20 @@
   "description": "kit ORM",
   "main": "index.js",
   "dependencies": {
-    "underscore":"1.5.x",
-    "underscore.string":"2.3.x",
-    "inflection":"1.2.x",
-    "async":"0.2.x",
-    "moment":"2.1.x"
+    "lodash": "2.1.x",
+    "underscore.string": "2.3.x",
+    "async": "0.2.x",
+    "moment": "2.1.x",
+    "murmurhash3": "0.2.x",
+    "inflection": "1.2.x"
   },
   "devDependencies": {
+    "pg":"2.6.x",
     "vows": "0.7.x",
     "assert": "0.4.x"
   },
   "scripts": {
-    "test": "vows test/* --spec"
+    "test": "vows test/postgresql.js --spec"
   },
   "repository": {
     "type": "git",
