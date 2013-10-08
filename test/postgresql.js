@@ -419,7 +419,7 @@
             'delete': function(obj) {
               assert.isFunction(obj.delete);
             }
-          },
+          }/*,
 
           'calling save': {
             topic: function(obj) {
@@ -429,7 +429,7 @@
             'returns object': function(obj) {
               console.log(obj);
             }
-          }
+          }*/
         }
       }
 /*,
