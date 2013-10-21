@@ -1,7 +1,7 @@
 {
-  "name": "kit",
-  "version": "0.0.1",
-  "description": "kit ORM",
+  "name": "db-kit",
+  "version": "0.1.0",
+  "description": "db-kit ORM",
   "main": "index.js",
   "dependencies": {
     "underscore":"1.5.x",
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/noosxe/kit.git"
+    "url": "https://github.com/noosxe/db-kit.git"
   },
   "author": "noosxe",
   "license": "mit"
