@@ -1,8 +1,11 @@
 {
   "name": "db-kit",
-  "version": "0.1.0",
-  "description": "db-kit ORM",
-  "main": "index.js",
+  "description": "Easy life ORM for node",
+  "version": "0.1.1",
+  "author": {
+    "name": "noosxe",
+    "email": "noosx.e@gmail.com"
+  },
   "dependencies": {
     "underscore":"1.5.x",
     "underscore.string":"2.3.x",
@@ -14,13 +17,19 @@
     "vows": "0.7.x",
     "assert": "0.4.x"
   },
-  "scripts": {
-    "test": "vows test/* --spec"
-  },
+  "keywords": [
+    "db",
+    "database",
+    "kit",
+    "orm",
+    "postgres"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/noosxe/db-kit.git"
   },
-  "author": "noosxe",
-  "license": "mit"
+  "main": "index",
+  "scripts": {
+    "test": "vows test/* --spec"
+  }
 }

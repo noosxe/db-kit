@@ -3,8 +3,9 @@
 
   var util = require('util');
   var Kit = require('../index.js');
-  var kit = new Kit('kit', 'postgres', '', {
-      debug: true
+  var kit = new Kit({
+    connString: 'postgres://postgres:@localhost:5432/kit',
+    debug: true
   });
 
   var User = kit.define('user', {
