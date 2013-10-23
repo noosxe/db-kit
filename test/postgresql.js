@@ -6,14 +6,25 @@
     , _ = require('lodash');
 
   var Kit = require('../index.js');
+  var kit = new Kit('kit', 'postgres', {
+    native: true,
+    debug: true
+  });
+
+  var Car = null;
+  var User = null;
 
   var suite = vows.describe('kit');
   suite.options.error = false;
 
   suite.addBatch({
     'Kit class': {
+      topic: function() {
+        return Kit;
+      },
+
       'adapters': {
-        topic: function() {
+        topic: function(Kit) {
           return Kit.adapters;
         },
 
@@ -21,23 +32,16 @@
           assert.isObject(topic);
         },
 
-        'contains': {
-          topic: function() {
-            return Kit.adapters;
-          },
-
-          'postgres': function(topic) {
-            assert.include(topic, 'postgres');
-          }
+        'includes postgres': function(topic) {
+          assert.include(topic, 'POSTGRES');
+          assert.isFunction(topic.postgres);
         }
       }
-    },
-
+    }
+  }).addBatch({
     'kit': {
       topic: function() {
-        return new Kit('kit', 'postgres', {
-          native: true
-        });
+        return kit;
       },
 
       'is kit object': function(topic) {
@@ -191,352 +195,252 @@
         'emits *error*': function(kit) {
           assert.throws(function() { kit.query.on('error', function() {}); }, Error);
         }
+      }
+    }
+  }).addBatch({
+    'kit model': {
+      topic: function() {
+        Car = kit.define('Car', {
+          make: { type: kit.types.STRING, required: true },
+          model: { type: kit.types.STRING, required: true },
+          hp: { type: kit.types.INT, required: true },
+          maxSpeed: { type: kit.types.INT, required: true },
+          productionDate: { type: kit.types.DATE, required: true }
+        }, {
+          timestamps: true
+        });
+
+        User = kit.define('User', {
+          email: { type: kit.types.STRING, required: true, unique: true, readOnly:true,
+            match: /^[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,4}$/i },
+          password: { type: kit.types.STRING, required: true, hidden: true, minLength: 8 },
+          firstName: kit.types.STRING,
+          lastName: kit.types.STRING,
+          birthDate: { type: kit.types.DATE, required: true },
+          gender: { type: kit.types.enum('gender', ['male', 'female']), required: true },
+          phoneNumbers: { type: [kit.types.STRING] },
+          car: { reference: Car }
+        }, {
+          timestamps: true
+        });
+
+        return User;
       },
 
-      'model': {
-        topic: function(kit) {
-          var Car = kit.define('Car', {
-            make: { type: kit.types.STRING, required: true },
-            model: { type: kit.types.STRING, required: true },
-            hp: { type: kit.types.INT, required: true },
-            maxSpeed: { type: kit.types.INT, required: true },
-            productionDate: { type: kit.types.DATE, required: true }
-          }, {
-            timestamps: true
-          });
+      'is defined': function(topic) {
+        assert.isNotNull(topic);
+      },
 
-          return kit.define('User', {
-            email: { type: kit.types.STRING, required: true, unique: true, readOnly:true,
-              match: /^[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,4}$/i },
-            password: { type: kit.types.STRING, required: true, hidden: true, minLength: 8 },
-            firstName: kit.types.STRING,
-            lastName: kit.types.STRING,
-            birthDate: { type: kit.types.DATE, required: true },
-            gender: { type: kit.types.enum('gender', ['male', 'female']), required: true },
-            phoneNumbers: { type: [kit.types.STRING] },
-            car: { reference: Car }
-          }, {
-            timestamps: true
-          });
+      'has options defined': function(topic) {
+        assert.include(topic, 'options');
+      },
+
+      'has attributes defined': function(topic) {
+        assert.include(topic, 'attributes');
+      },
+
+      'has primary key': function(topic) {
+        assert.include(topic, 'primaryKey');
+      },
+
+      'generates id primary key field': function(topic) {
+        assert.include(topic.attributes, 'id');
+        assert.include(topic.attributes.id, 'type');
+        assert.equal(topic.attributes.id.type, 'serial');
+        assert.include(topic.attributes.id, 'primary');
+        assert.isTrue(topic.attributes.id.primary);
+      },
+
+      'generates timestamp fields': function(topic) {
+        assert.include(topic.attributes, 'createdAt');
+        assert.include(topic.attributes.createdAt, 'type');
+        assert.equal(topic.attributes.createdAt.type, 'timestamp with time zone');
+        assert.include(topic.attributes.createdAt, 'default');
+        assert.equal(topic.attributes.createdAt.default, 'NOW()');
+
+        assert.include(topic.attributes, 'updatedAt');
+        assert.include(topic.attributes.updatedAt, 'type');
+        assert.equal(topic.attributes.updatedAt.type, 'timestamp with time zone');
+        assert.include(topic.attributes.updatedAt, 'default');
+        assert.equal(topic.attributes.updatedAt.default, 'NOW()');
+      },
+
+      'has methods': {
+        topic: function(topic) {
+          return topic;
         },
 
-        'is defined': function(model) {
-          assert.isNotNull(model);
+        'sync': function(topic) {
+          assert.isFunction(topic.sync);
         },
 
-        'has options defined': function(model) {
-          assert.include(model, 'options');
+        'drop': function(topic) {
+          assert.isFunction(topic.drop);
         },
 
-        'has attributes defined': function(model) {
-          assert.include(model, 'attributes');
+        'build': function(topic) {
+          assert.isFunction(topic.build);
         },
 
-        'has primary key': function(model) {
-          assert.include(model, 'primaryKey');
+        'fromJson': function(topic) {
+          assert.isFunction(topic.fromJson);
         },
 
-        'generates id primary key field': function(model) {
-          assert.include(model.attributes, 'id');
-          assert.include(model.attributes.id, 'type');
-          assert.equal(model.attributes.id.type, 'serial');
-          assert.include(model.attributes.id, 'primary');
-          assert.isTrue(model.attributes.id.primary);
+        'find': function(topic) {
+          assert.isFunction(topic.find);
         },
 
-        'generates timestamp fields': function(model) {
-          assert.include(model.attributes, 'createdAt');
-          assert.include(model.attributes.createdAt, 'type');
-          assert.equal(model.attributes.createdAt.type, 'timestamp with time zone');
-          assert.include(model.attributes.createdAt, 'default');
-          assert.equal(model.attributes.createdAt.default, 'NOW()');
-
-          assert.include(model.attributes, 'updatedAt');
-          assert.include(model.attributes.updatedAt, 'type');
-          assert.equal(model.attributes.updatedAt.type, 'timestamp with time zone');
-          assert.include(model.attributes.updatedAt, 'default');
-          assert.equal(model.attributes.updatedAt.default, 'NOW()');
+        'findOne': function(topic) {
+          assert.isFunction(topic.findOne);
         },
 
-        'has methods': {
-          topic: function(model) {
-            return model;
-          },
-
-          'sync': function(model) {
-            assert.isFunction(model.sync);
-          },
-
-          'drop': function(model) {
-            assert.isFunction(model.drop);
-          },
-
-          'build': function(model) {
-            assert.isFunction(model.build);
-          },
-
-          'fromJson': function(model) {
-            assert.isFunction(model.fromJson);
-          },
-
-          'find': function(model) {
-            assert.isFunction(model.find);
-          },
-
-          'findOne': function(model) {
-            assert.isFunction(model.findOne);
-          },
-
-          'update': function(model) {
-            assert.isFunction(model.update);
-          },
-
-          'delete': function(model) {
-            assert.isFunction(model.delete);
-          }
+        'update': function(topic) {
+          assert.isFunction(topic.update);
         },
 
-        'sync method': {
-          topic: function(model, kit) {
-            var $this = this;
-            kit.models.Car.sync().on('done', function() {
-              model.sync().on('done', $this.callback);
-            });
-          },
-
-          'returns model object': function(model) {
-            assert.isObject(model);
-            assert.include(model, 'options');
-            assert.include(model.options, 'tableName');
-            assert.equal(model.options.tableName, 'Users');
-          },
-
-          'creates table': {
-            topic: function(arg0, arg1, arg2, kit) {
-              kit.query('SELECT * FROM "pg_tables" WHERE schemaname=\'public\' AND tablename=\'Users\'').on('done', this.callback);
-            },
-
-            'table found': function(results) {
-              assert.isArray(results);
-              assert.isNotNull(results[0]);
-            },
-
-            'drop method': {
-              topic: function(arg0, arg1, model) {
-                model.drop().on('done', this.callback);
-              },
-
-              'returns model object': function(model) {
-                assert.isObject(model);
-                assert.include(model, 'options');
-                assert.include(model.options, 'tableName');
-                assert.equal(model.options.tableName, 'Users');
-              },
-
-              'deletes table': {
-                topic: function(arg0, arg1, arg2, arg3, arg4, arg5, arg6, kit) {
-                  kit.query('SELECT * FROM "pg_tables" WHERE schemaname=\'public\' AND tablename=\'Users\'').on('done', this.callback);
-                },
-
-                'table not found': function(results) {
-                  assert.isArray(results);
-                  assert.lengthOf(results, 0);
-                }
-              }
-            }
-          }
-        },
-
-        'build method returned object': {
-          topic: function(model) {
-            return model.build({
-              email: 'kirlevon@gmail.com',
-              password: 'pass',
-              firstName: 'Levon',
-              lastName: 'Kirakosyan',
-              birthDate: new Date(1990, 8, 4),
-              gender: 'male',
-              phoneNumbers: ['9845642', '84512159'],
-              car: {
-                make: 'audi',
-                model: 'TT',
-                hp: 180,
-                maxSpeed: 225,
-                productionDate: new Date(2000, 0, 1)
-              }
-            });
-          },
-
-          'is not null': function(obj) {
-            assert.isNotNull(obj);
-          },
-
-          'contains desired fields': function(obj) {
-            assert.include(obj, '__kit');
-            assert.include(obj, '__model');
-            assert.include(obj, '__values');
-            assert.include(obj, 'id');
-            assert.include(obj, 'email');
-            assert.include(obj, 'password');
-            assert.include(obj, 'firstName');
-            assert.include(obj, 'lastName');
-            assert.include(obj, 'birthDate');
-            assert.include(obj, 'gender');
-            assert.include(obj, 'phoneNumbers');
-            assert.include(obj, 'car');
-            assert.include(obj, 'createdAt');
-            assert.include(obj, 'updatedAt');
-            assert.include(obj.car, '__kit');
-            assert.include(obj.car, '__model');
-            assert.include(obj.car, '__values');
-            assert.include(obj.car, 'id');
-            assert.include(obj.car, 'make');
-            assert.include(obj.car, 'model');
-            assert.include(obj.car, 'hp');
-            assert.include(obj.car, 'maxSpeed');
-            assert.include(obj.car, 'productionDate');
-            assert.include(obj.car, 'createdAt');
-            assert.include(obj.car, 'updatedAt');
-          },
-
-          'has methods': {
-            topic: function(obj) {
-              return obj;
-            },
-
-            'toJson': function(obj) {
-              assert.isFunction(obj.toJson);
-            },
-
-            'save': function(obj) {
-              assert.isFunction(obj.save);
-            },
-
-            'reload': function(obj) {
-              assert.isFunction(obj.reload);
-            },
-
-            'delete': function(obj) {
-              assert.isFunction(obj.delete);
-            }
-          }/*,
-
-          'calling save': {
-            topic: function(obj) {
-              obj.save().on('done', this.callback);
-            },
-
-            'returns object': function(obj) {
-              console.log(obj);
-            }
-          }*/
+        'delete': function(topic) {
+          assert.isFunction(topic.delete);
         }
       }
-/*,
-      'model': {
-        topic: function(kit) {
-          return kit.define('user', {
-            email: {
-              type: kit.types.STRING,
-              required: true,
-              readOnly: true,
-              unique: true
-            },
-            password: {
-              type: kit.types.STRING,
-              required: true,
-              hidden: true
-            },
-            firstName: kit.types.STRING,
-            lastName: kit.types.STRING,
-            birthDate: kit.types.DATE
-          });
-        },
-        'model name is user': function(topic) {
-          assert.equal(topic.name, 'user');
-        },
-        'table name is user': function(topic) {
-          assert.equal(topic.getTableName(), 'user');
-        },
-        'returns field names': function(topic) {
-          var fieldNames = topic.getFieldNames();
-          assert.include(fieldNames, 'email');
-          assert.include(fieldNames, 'password');
-          assert.include(fieldNames, 'firstName');
-          assert.include(fieldNames, 'lastName');
-        },
-        'has fields': function(topic) {
-          assert.isTrue(topic.hasField('email'));
-          assert.isTrue(topic.hasField('password'));
-          assert.isTrue(topic.hasField('firstName'));
-          assert.isTrue(topic.hasField('lastName'));
-        },
-        'required fields': function(topic) {
-          assert.isTrue(topic.isRequired('email'));
-          assert.isTrue(topic.isRequired('password'));
-          assert.isFalse(topic.isRequired('firstName'));
-          assert.isFalse(topic.isRequired('lastName'));
-        },
-        'unique fields': function(topic) {
-          assert.isTrue(topic.isUnique('email'));
-          assert.isFalse(topic.isUnique('password'));
-          assert.isFalse(topic.isUnique('firstName'));
-          assert.isFalse(topic.isUnique('lastName'));
-        },
-        'readOnly fields': function(topic) {
-          assert.isTrue(topic.isReadOnly('email'));
-          assert.isFalse(topic.isReadOnly('password'));
-          assert.isFalse(topic.isReadOnly('firstName'));
-          assert.isFalse(topic.isReadOnly('lastName'));
-        },
-        'hidden fields': function(topic) {
-          assert.isTrue(topic.isHidden('password'));
-          assert.isFalse(topic.isHidden('email'));
-          assert.isFalse(topic.isHidden('firstName'));
-          assert.isFalse(topic.isHidden('lastName'));
-        },
-        'field types': function(topic) {
-          assert.equal(topic.fieldType('email'), topic.getOptions().kit.types.STRING);
-          assert.equal(topic.fieldType('password'), topic.getOptions().kit.types.STRING);
-          assert.equal(topic.fieldType('firstName'), topic.getOptions().kit.types.STRING);
-          assert.equal(topic.fieldType('lastName'), topic.getOptions().kit.types.STRING);
-          assert.equal(topic.fieldType('birthDate'), topic.getOptions().kit.types.DATE);
+    }
+  }).addBatch({
+    'model sync method': {
+      topic: function() {
+        var $this = this;
+        Car.sync().on('done', function() {
+          User.sync().on('done', $this.callback);
+        });
+      },
+
+      'returns model object': function(model) {
+        assert.isObject(model);
+        assert.include(model, 'options');
+        assert.include(model.options, 'tableName');
+        assert.equal(model.options.tableName, 'Users');
+      },
+
+      'creates table': {
+        topic: function() {
+          kit.query('SELECT * FROM "pg_tables" WHERE schemaname=\'public\' AND tablename=\'Users\'').on('done', this.callback);
         },
 
-        'reference': {
-          topic: function(User, kit) {
-            return kit.define('project', {
-              name: {
-                type: kit.types.STRING,
-                required: true
-              },
-              author: {
-                type: kit.types.INT,
-                required: true,
-                reference: {
-                  entity: User,
-                  field: 'id'
-                },
-                readOnly:true
-              }
-            });
-          },
-
-          'is reference': function(topic) {
-            assert.isTrue(topic.isReference('author'));
-          },
-          'reference is defined': function(topic) {
-            assert.isNotNull(topic.getReference('author'));
-          },
-          'has one dependency - *User*': function(topic) {
-            var deps = topic.getDependencies();
-            assert.isArray(deps);
-            assert.lengthOf(deps, 1);
-            assert.equal(deps[0].getModelName(), 'user');
-          }
+        'table found': function(results) {
+          assert.isArray(results);
+          assert.isNotNull(results[0]);
         }
-      } */
+      }
+    }
+  }).addBatch({
+    'model build method': {
+      topic: function() {
+        return User.build({
+          email: 'kirlevon@gmail.com',
+          password: 'pass',
+          firstName: 'Levon',
+          lastName: 'Kirakosyan',
+          birthDate: new Date(1990, 8, 4),
+          gender: 'male',
+          phoneNumbers: ['9845642', '84512159'],
+          car: {
+            make: 'audi',
+            model: 'TT',
+            hp: 180,
+            maxSpeed: 225,
+            productionDate: new Date(2000, 0, 1)
+          }
+        });
+      },
+
+      'is not null': function(obj) {
+        assert.isNotNull(obj);
+      },
+
+      'contains desired fields': function(obj) {
+        assert.include(obj, '__kit');
+        assert.include(obj, '__model');
+        assert.include(obj, '__values');
+        assert.include(obj, 'id');
+        assert.include(obj, 'email');
+        assert.include(obj, 'password');
+        assert.include(obj, 'firstName');
+        assert.include(obj, 'lastName');
+        assert.include(obj, 'birthDate');
+        assert.include(obj, 'gender');
+        assert.include(obj, 'phoneNumbers');
+        assert.include(obj, 'car');
+        assert.include(obj, 'createdAt');
+        assert.include(obj, 'updatedAt');
+        assert.include(obj.car, '__kit');
+        assert.include(obj.car, '__model');
+        assert.include(obj.car, '__values');
+        assert.include(obj.car, 'id');
+        assert.include(obj.car, 'make');
+        assert.include(obj.car, 'model');
+        assert.include(obj.car, 'hp');
+        assert.include(obj.car, 'maxSpeed');
+        assert.include(obj.car, 'productionDate');
+        assert.include(obj.car, 'createdAt');
+        assert.include(obj.car, 'updatedAt');
+      },
+
+      'has methods': {
+        topic: function(obj) {
+          return obj;
+        },
+
+        'toJson': function(obj) {
+          assert.isFunction(obj.toJson);
+        },
+
+        'save': function(obj) {
+          assert.isFunction(obj.save);
+        },
+
+        'reload': function(obj) {
+          assert.isFunction(obj.reload);
+        },
+
+        'delete': function(obj) {
+          assert.isFunction(obj.delete);
+        }
+      },
+
+      'save method': {
+        topic: function(obj) {
+          obj.save().on('done', this.callback);
+        },
+
+        'returns object': function(obj) {
+          //console.log(obj);
+        }
+      }
+    }
+  }).addBatch({
+    'model drop method': {
+      topic: function() {
+        User.drop().on('done', this.callback);
+      },
+
+      'returns model object': function(model) {
+        assert.isObject(model);
+        assert.include(model, 'options');
+        assert.include(model.options, 'tableName');
+        assert.equal(model.options.tableName, 'Users');
+      },
+
+      'deletes table': {
+        topic: function() {
+          kit.query('SELECT * FROM "pg_tables" WHERE schemaname=\'public\' AND tablename=\'Users\'').on('done', this.callback);
+        },
+
+        'table not found': function(results) {
+          assert.isArray(results);
+          assert.lengthOf(results, 0);
+        }
+      }
     }
   }).export(module);
+
+
 
 }());
