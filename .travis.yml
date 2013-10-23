@@ -10,4 +10,4 @@ before_script:
 
 branches:
   only:
-    - v0.0.2
+    - v0.2.0
