@@ -189,13 +189,14 @@
 
       'wrong query': {
         topic: function(kit) {
-          return kit;
+          kit.query('this is not a query').on('error', this.callback);
         },
 
-        'emits *error*': function(kit) {
-          assert.throws(function() { kit.query.on('error', function() {}); }, Error);
+        'emits *error*': function(err) {
+          assert.isNotNull(err);
         }
       }
+
     }
   }).addBatch({
     'kit model': {
@@ -331,7 +332,7 @@
       }
     }
   }).addBatch({
-    'model build method': {
+    'build method returns object which': {
       topic: function() {
         return User.build({
           email: 'kirlevon@gmail.com',
@@ -411,7 +412,7 @@
         },
 
         'returns object': function(obj) {
-          //console.log(obj);
+          assert.isNotNull(obj);
         }
       }
     }
@@ -440,7 +441,4 @@
       }
     }
   }).export(module);
-
-
-
 }());
