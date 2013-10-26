@@ -16,15 +16,14 @@
 
   var executor = kit.executor({ transaction: true });
 
-  executor.query('SELECT NOW() AS "NOW"').on('done', function(rows, results) {
+  executor.query('SELECT NOW() AS "NOW"').on('done', function(rows, fields, results) {
   }).on('error', function(err) {
 
   });
 
-  executor.query('SELECT NOW() AS "THEN"').on('done', function(rows, results) {
+  executor.query('SELECT NOW() AS "THEN"').on('done', function(rows, fields, results) {
     executor.finish();
   }).on('error', function(err) {
-
   });
 
 /*
