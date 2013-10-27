@@ -196,7 +196,6 @@
           assert.isNotNull(err);
         }
       }
-
     }
   }).addBatch({
     'kit model': {

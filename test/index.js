@@ -6,26 +6,28 @@
         console.log(util.inspect(obj, { showHidden: true, depth: null, colors: true }));
       };
 
-  //require('./postgresql').kit.run();
-
+  require('./postgresql').kit.run();
+/*
   var Kit = require('../index.js');
   var kit = new Kit('kit', 'postgres', {
     native: true,
     debug: true
-  });
-
-  var executor = kit.executor({ transaction: true });
+  });*/
+/*
+  var executor = kit.executor({ serial: true });
 
   executor.query('SELECT NOW() AS "NOW"').on('done', function(rows, fields, results) {
+    console.log(rows);
   }).on('error', function(err) {
 
   });
 
   executor.query('SELECT NOW() AS "THEN"').on('done', function(rows, fields, results) {
+    console.log(rows);
     executor.finish();
   }).on('error', function(err) {
   });
-
+*/
 /*
   var Car = kit.define('Car', {
     make: { type: kit.types.STRING, required: true },
@@ -35,11 +37,8 @@
     productionDate: { type: kit.types.DATE, required: true }
   }, {
     timestamps: true
-  });*/
+  });
 
-  //i(Car);
-
-/*
   var User = kit.define('User', {
     email: { type: kit.types.STRING, required: true, unique: true, readOnly:true,
       match: /^[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,4}$/i },
@@ -54,6 +53,12 @@
     timestamps: true
   });
 
+  Car.sync().on('done', function() {
+    User.sync().on('done', function() {
+      console.log('synced');
+    });
+  });*/
+/*
   var user = User.build({
     email: 'kirlevon@gmail.com',
     password: 'pass',
@@ -75,5 +80,6 @@
     console.log(user);
   });
   */
+
 
 }());

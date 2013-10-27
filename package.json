@@ -4,12 +4,13 @@
   "description": "kit ORM",
   "main": "index.js",
   "dependencies": {
-    "lodash": "2.1.x",
+    "lodash": "2.2.x",
     "underscore.string": "2.3.x",
     "async": "0.2.x",
-    "moment": "2.1.x",
+    "moment": "2.4.x",
     "murmurhash3": "0.2.x",
-    "inflection": "1.2.x"
+    "inflection": "1.2.x",
+    "node-uuid": "1.4.x"
   },
   "devDependencies": {
     "pg":"2.6.x",
