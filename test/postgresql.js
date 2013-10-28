@@ -7,8 +7,8 @@
 
   var Kit = require('../index.js');
   var kit = new Kit('kit', 'postgres', {
-    native: true,
-    debug: true
+    native: true//,
+    //debug: true
   });
 
   var Car = null;
@@ -330,7 +330,7 @@
         }
       }
     }
-  }).addBatch({
+  })/*.addBatch({
     'build method returns object which': {
       topic: function() {
         return User.build({
@@ -415,7 +415,7 @@
         }
       }
     }
-  }).addBatch({
+  })*/.addBatch({
     'model drop method': {
       topic: function() {
         User.drop().on('done', this.callback);
