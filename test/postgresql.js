@@ -330,7 +330,7 @@
         }
       }
     }
-  })/*.addBatch({
+  }).addBatch({
     'build method returns object which': {
       topic: function() {
         return User.build({
@@ -410,15 +410,20 @@
           obj.save().on('done', this.callback);
         },
 
-        'returns object': function(obj) {
+        'returns kit object': function(obj) {
           assert.isNotNull(obj);
         }
       }
     }
-  })*/.addBatch({
+  }).addBatch({
     'model drop method': {
       topic: function() {
-        User.drop().on('done', this.callback);
+        var $this = this;
+        User.drop().on('done', function(model) {
+          Car.drop().on('done', function() {
+            $this.callback(model);
+          });
+        });
       },
 
       'returns model object': function(model) {
