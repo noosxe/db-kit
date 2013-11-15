@@ -1,7 +1,3 @@
-# kit [![Build Status](https://travis-ci.org/noosxe/db-kit.png?branch=v0.2.0)](https://travis-ci.org/noosxe/db-kit)
-
-## License
-
 The MIT License (MIT)
 
 Copyright (c) 2013 Levon Kirakosyan <<noosx.e@gmail.com>>

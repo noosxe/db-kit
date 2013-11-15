@@ -10,13 +10,20 @@
     "moment": "2.4.x",
     "murmurhash3": "0.2.x",
     "inflection": "1.2.x",
-    "node-uuid": "1.4.x"
+    "node-uuid": "1.4.x",
+    "dotty":"0.0.x"
   },
   "devDependencies": {
-    "pg":"2.6.x",
+    "pg":"2.8.x",
     "vows": "0.7.x",
     "assert": "0.4.x"
   },
+  "keywords": [
+    "db-kit",
+    "database",
+    "postgres",
+    "orm"
+  ],
   "scripts": {
     "test": "vows test/postgresql.js --spec"
   },
@@ -24,6 +31,6 @@
     "type": "git",
     "url": "https://github.com/noosxe/kit.git"
   },
-  "author": "",
-  "license": ""
+  "author": "Levon Kirakosyan <noosx.e@gmail.com",
+  "license": "MIT"
 }
