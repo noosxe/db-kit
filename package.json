@@ -2,6 +2,8 @@
   "name": "kit",
   "version": "0.0.1",
   "description": "kit ORM",
+  "author": "Levon Kirakosyan <noosx.e@gmail.com",
+  "license": "MIT",
   "main": "index.js",
   "dependencies": {
     "lodash": "2.2.x",
@@ -29,8 +31,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/noosxe/kit.git"
-  },
-  "author": "Levon Kirakosyan <noosx.e@gmail.com",
-  "license": "MIT"
+    "url": "https://github.com/noosxe/db-kit.git"
+  }
 }
