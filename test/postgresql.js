@@ -207,7 +207,8 @@
           maxSpeed: { type: kit.types.INT, required: true },
           productionDate: { type: kit.types.DATE, required: true }
         }, {
-          timestamps: true
+          timestamps: true,
+          comment: "This is the cars table"
         });
 
         User = kit.define('User', {
@@ -221,7 +222,8 @@
           phoneNumbers: { type: [kit.types.STRING] },
           car: { reference: Car }
         }, {
-          timestamps: true
+          timestamps: true,
+          comment: "This is the users table"
         });
 
         return User;
