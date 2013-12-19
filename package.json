@@ -1,12 +1,12 @@
 {
   "name": "kit",
-  "version": "0.0.1",
-  "description": "kit ORM",
+  "version": "0.2.0",
+  "description": "Easy life ORM for node",
   "author": "Levon Kirakosyan <noosx.e@gmail.com",
   "license": "MIT",
   "main": "index.js",
   "dependencies": {
-    "lodash": "2.2.x",
+    "lodash": "2.4.x",
     "underscore.string": "2.3.x",
     "async": "0.2.x",
     "moment": "2.4.x",

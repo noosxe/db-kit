@@ -7,8 +7,8 @@
 
   var Kit = require('../index.js');
   var kit = new Kit('kit', 'postgres', {
-    native: true//,
-    //debug: true
+    native: true,
+    debug: true
   });
 
   var Car = null;

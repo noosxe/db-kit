@@ -6,30 +6,15 @@
         console.log(util.inspect(obj, { showHidden: true, depth: null, colors: true }));
       };
 
-  require('./postgresql').kit.run();
-/*
+  //require('./postgresql').kit.run();
+
   var Kit = require('../index.js');
   var kit = new Kit('kit', 'postgres', {
     native: true,
     debug: true
-  });*/
-/*
-  var executor = kit.executor({ serial: true });
-
-  executor.query('SELECT NOW() AS "NOW"').on('done', function(rows, fields, results) {
-    console.log(rows);
-  }).on('error', function(err) {
-
   });
 
-  executor.query('SELECT NOW() AS "THEN"').on('done', function(rows, fields, results) {
-    console.log(rows);
-    executor.finish();
-  }).on('error', function(err) {
-  });
-*/
-/*
-  var Car = kit.define('Car', {
+  var Project = kit.define('Project', {
     make: { type: kit.types.STRING, required: true },
     model: { type: kit.types.STRING, required: true },
     hp: { type: kit.types.INT, required: true },
@@ -39,47 +24,23 @@
     timestamps: true
   });
 
-  var User = kit.define('User', {
-    email: { type: kit.types.STRING, required: true, unique: true, readOnly:true,
-      match: /^[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,4}$/i },
+  var Worker = kit.define('Worker', {
+    email: { type: kit.types.STRING, required: true, unique: true, readOnly: true,
+      match: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/ },
     password: { type: kit.types.STRING, required: true, hidden: true, minLength: 8 },
     firstName: kit.types.STRING,
     lastName: kit.types.STRING,
     birthDate: { type: kit.types.DATE, required: true },
     gender: { type: kit.types.enum('gender', ['male', 'female']), required: true },
-    phoneNumbers: { type: [kit.types.STRING] },
-    car: { reference: Car }
+    phoneNumbers: { type: [kit.types.STRING] }
   }, {
     timestamps: true
   });
 
-  Car.sync().on('done', function() {
-    User.sync().on('done', function() {
-      console.log('synced');
-    });
-  });*/
-/*
-  var user = User.build({
-    email: 'kirlevon@gmail.com',
-    password: 'pass',
-    firstName: 'Levon',
-    lastName: 'Kirakosyan',
-    birthDate: new Date(1990, 8, 4),
-    gender: 'male',
-    phoneNumbers: ['9845642', '84512159'],
-    car: {
-      make: 'audi',
-      model: 'TT',
-      hp: 180,
-      maxSpeed: 225,
-      productionDate: new Date(2000, 0, 1)
-    }
-  });
+  Project.as('projects').field('id').manyToMany(Worker.as('workers'));
 
-  user.save().on('done', function(user) {
-    console.log(user);
+  kit.sync().on('done', function() {
+    console.log('synced');
   });
-  */
-
 
 }());
