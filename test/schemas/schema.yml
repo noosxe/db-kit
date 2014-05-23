@@ -1,0 +1,10 @@
+User:
+  props:
+    email: string
+    password: string
+    birthdate: date
+    active: bool
+    firstName: string
+    lastName: string
+    bio: text
+    balance: double
