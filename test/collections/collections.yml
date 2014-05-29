@@ -1,0 +1,17 @@
+User:
+  type: collection
+  fields:
+    email: string
+    password:
+      type: string
+      length: 50
+    birthdate: date
+    active: bool
+    firstName: string
+    lastName: string
+    bio:
+      type: text
+      optional: true
+    balance: double
+  options:
+    timestamps: true

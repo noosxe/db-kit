@@ -29,7 +29,7 @@
 		"orm"
 	],
 	"scripts": {
-		"test": ""
+		"test": "mocha -R spec"
 	},
 	"repository": {
 		"type": "git",
