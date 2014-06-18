@@ -1,14 +1,13 @@
 "use strict";
 
-var chai = require("chai");
+var chai = require('chai');
 var chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 var expect = chai.expect;
 var path = require('path');
 var _ = require('lodash');
-var collectionsDir = path.join(__dirname, "collections");
-var MySQL = require("../lib/adapters/mysql/index.js");
-
+var collectionsDir = path.join(__dirname, '../collections');
+var MySQL = require('../../lib/adapters/mysql/index.js');
 
 describe('MySQL adapter', function() {
 
@@ -65,8 +64,19 @@ describe('MySQL adapter', function() {
 		it('should load collection definitions from specified location', function() {
 
 			return expect(MySQL.instance({ collections: collectionsDir }).loadCollections().then(function(schema) {
+				//console.log(schema.collections.User.options);
 				return _.keys(schema.collections);
 			})).to.eventually.be.deep.equal(['User', 'Project']);
+
+		});
+
+	});
+
+	describe('#prepareSchema()', function() {
+
+		it('should convert collections to appropriate classes', function() {
+			var my = MySQL.instance({ collections: collectionsDir });
+			return expect(my.loadCollections().then(my.prepareSchema()));
 
 		});
 

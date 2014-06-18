@@ -28,7 +28,7 @@
 		"orm"
 	],
 	"scripts": {
-		"test": "mocha -R spec"
+		"test": "mocha --recursive -R spec"
 	},
 	"repository": {
 		"type": "git",
