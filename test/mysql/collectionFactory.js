@@ -30,6 +30,15 @@ describe('MySQL.CollectionFactory', function() {
 						readOnly: false,
 						hidden: false,
 						service: false
+					},
+					serial: {
+						type: 'STRING',
+						primary: false,
+						autoIncrement: false,
+						optional: false,
+						readOnly: true,
+						hidden: false,
+						service: false
 					}
 				},
 				options: {
