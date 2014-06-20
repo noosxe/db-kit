@@ -5,7 +5,7 @@ var expect = chai.expect;
 var CollectionFactory = require('../../lib/adapters/mysql/collectionFactory.js');
 var Collection = require('../../lib/adapters/mysql/collection.js');
 
-var col = CollectionFactory.build({
+var User = CollectionFactory.build({
 	fields: {
 		email: {
 			type: 'STRING',
@@ -43,14 +43,29 @@ var col = CollectionFactory.build({
 	primaryKeys: 'id'
 });
 
-describe('MySQL.CollectionFactory', function() {
+var user = new User({
+	email: 'example@example.com',
+	password: 'secret',
+	serial: 'abcdefg'
+});
 
-	describe('#build()', function() {
+describe('MySQL Collection instance', function() {
 
-		it('should build collection class based on provided definition', function() {
-			expect(col).to.have.property('create');
-			expect(col).to.have.property('destroy');
-		});
+	it('should have required field properties', function() {
+
+		expect(user).to.have.property('email');
+		expect(user).to.have.property('password');
+		expect(user).to.have.property('serial');
+
+	});
+
+	it('should throw exception when trying to set readOnly property', function() {
+
+		var action = function() {
+			user.serial = 'test';
+		};
+
+		expect(action).to.throw(Error);
 
 	});
 
