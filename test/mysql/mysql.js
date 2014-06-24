@@ -26,12 +26,12 @@ describe('MySQL adapter', function() {
 				.to.be.deep.equal({
 					connection: {
 						host: 'localhost',
-						port: '3306',
+						port: 3306,
 						user: 'root',
 						password: '',
 						database: 'test',
-						charset: 'utf8_unicode_ci',
-						string: 'mysql://root:@localhost:3306/test?&charset=utf8_unicode_ci',
+						charset: 'UTF8_UNICODE_CI',
+						string: 'mysql://root:@localhost:3306/test?&charset=UTF8_UNICODE_CI',
 						debug: false
 					}
 				});
@@ -44,12 +44,12 @@ describe('MySQL adapter', function() {
 				.to.be.deep.equal({
 					connection: {
 						host: 'localhost',
-						port: '3306',
+						port: 3306,
 						user: 'test',
 						password: '',
 						database: 'test',
-						charset: 'utf8_unicode_ci',
-						string: 'mysql://test:@localhost:3306/test?&charset=utf8_unicode_ci',
+						charset: 'UTF8_UNICODE_CI',
+						string: 'mysql://test:@localhost:3306/test?&charset=UTF8_UNICODE_CI',
 						debug: false
 					},
 					collections: collectionsDir
