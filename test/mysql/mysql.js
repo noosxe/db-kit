@@ -64,8 +64,8 @@ describe('MySQL adapter', function() {
 		it('should load collection definitions from specified location', function() {
 
 			return expect(MySQL.instance({ collections: collectionsDir }).loadCollections().then(function(schema) {
-				return _.keys(schema.collections);
-			})).to.eventually.be.deep.equal(['User', 'Project']);
+				return schema.collections;
+			})).to.eventually.have.keys(['User', 'Project']);
 
 		});
 
@@ -79,6 +79,16 @@ describe('MySQL adapter', function() {
 			return expect(my.loadCollections().then(my.prepareSchema.bind(my)).then(function() {
 				return my.schema.collections;
 			})).to.eventually.have.keys(['User', 'Project']);
+
+		});
+
+		it('should generate connections', function() {
+
+			var my = MySQL.instance({ collections: collectionsDir });
+
+			return expect(my.loadCollections().then(my.prepareSchema.bind(my)).then(function() {
+				return my.schema.connections;
+			})).to.eventually.have.keys(['UserProject']);
 
 		});
 
