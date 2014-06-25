@@ -1,11 +1,11 @@
 "use strict";
 
-var chai = require('chai');
-var chaiAsPromised = require("chai-as-promised");
+var chai              = require('chai');
+var chaiAsPromised    = require("chai-as-promised");
 chai.use(chaiAsPromised);
-var expect = chai.expect;
+var expect            = chai.expect;
 var CollectionFactory = require('../../lib/adapters/mysql/collectionFactory.js');
-var Collection = require('../../lib/adapters/mysql/collection.js');
+var Collection        = require('../../lib/adapters/mysql/collection.js');
 var Connection        = require('db-kit.connection-mysql');
 
 var User = CollectionFactory.build({
@@ -68,7 +68,7 @@ describe('MySQL Collection', function() {
 	describe('#create()', function() {
 
 		it('should create collection table', function() {
-
+			return expect(User.create()).to.eventually.not.be.undefined;
 		});
 
 	});
