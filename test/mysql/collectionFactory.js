@@ -50,6 +50,9 @@ describe('MySQL.CollectionFactory', function() {
 		it('should build collection class based on provided definition', function() {
 			expect(col).to.have.property('create');
 			expect(col).to.have.property('destroy');
+			expect(col).to.have.property('find');
+			expect(col).to.have.property('findOne');
+			expect(col).to.have.property('update');
 		});
 
 	});
