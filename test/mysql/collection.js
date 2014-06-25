@@ -73,6 +73,14 @@ describe('MySQL Collection', function() {
 
 	});
 
+	describe('#destroy()', function() {
+
+		it('should destroy collection table', function() {
+			return expect(User.destroy()).to.eventually.not.be.undefined;
+		});
+
+	});
+
 });
 
 describe('MySQL Collection instance', function() {
