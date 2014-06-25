@@ -73,6 +73,14 @@ describe('MySQL Collection', function() {
 
 	});
 
+	describe('#empty()', function() {
+
+		it('should truncate the collection table', function() {
+			return expect(User.empty()).to.eventually.not.be.undefined;
+		})
+
+	});
+
 	describe('#destroy()', function() {
 
 		it('should destroy collection table', function() {
