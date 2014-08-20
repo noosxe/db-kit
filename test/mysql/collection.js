@@ -1,5 +1,6 @@
 "use strict";
 
+var dejavu            = require('dejavu');
 var chai              = require('chai');
 var chaiAsPromised    = require("chai-as-promised");
 chai.use(chaiAsPromised);
@@ -165,6 +166,52 @@ describe('MySQL Collection instance', function() {
 						serial: 'abcdefg'
 					}
 				]);
+
+		});
+
+	});
+
+	describe('#find()', function() {
+
+		beforeEach(function() {
+			return User.create().then(function() {
+				return user.save();
+			});
+		});
+
+		afterEach(function() {
+			return User.destroy();
+		});
+
+		it('should return an array of User model objects', function() {
+
+			return expect(User.find().then(function(results) {
+				return dejavu.instanceOf(results[0], User);
+			}))
+					.to.eventually.be.true;
+
+		});
+
+	});
+
+	describe('#findOne()', function() {
+
+		beforeEach(function() {
+			return User.create().then(function() {
+				return user.save();
+			});
+		});
+
+		afterEach(function() {
+			return User.destroy();
+		});
+
+		it('should return a single User model object', function() {
+
+			return expect(User.findOne().then(function(result) {
+				return dejavu.instanceOf(result, User);
+			}))
+					.to.eventually.be.true;
 
 		});
 
