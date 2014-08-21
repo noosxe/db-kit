@@ -3,10 +3,10 @@ language: node_js
 node_js:
   - "0.10"
 
-services: PostgreSQL
+services: MySQL
 
 before_script:
-  - psql -c 'create database kit;' -U postgres
+  - mysql -e 'create database test;'
 
 branches:
   only:
