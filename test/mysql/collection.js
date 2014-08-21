@@ -123,6 +123,52 @@ describe('MySQL Collection', function() {
 
 	});
 
+	describe('#find()', function() {
+
+		beforeEach(function() {
+			return User.create().then(function() {
+				return user.save();
+			});
+		});
+
+		afterEach(function() {
+			return User.destroy();
+		});
+
+		it('should return an array of User model objects', function() {
+
+			return expect(User.find().then(function(results) {
+				return dejavu.instanceOf(results[0], User);
+			}))
+					.to.eventually.be.true;
+
+		});
+
+	});
+
+	describe('#findOne()', function() {
+
+		beforeEach(function() {
+			return User.create().then(function() {
+				return user.save();
+			});
+		});
+
+		afterEach(function() {
+			return User.destroy();
+		});
+
+		it('should return a single User model object', function() {
+
+			return expect(User.findOne().then(function(result) {
+				return dejavu.instanceOf(result, User);
+			}))
+					.to.eventually.be.true;
+
+		});
+
+	});
+
 });
 
 describe('MySQL Collection instance', function() {
@@ -171,7 +217,7 @@ describe('MySQL Collection instance', function() {
 
 	});
 
-	describe('#find()', function() {
+	describe('#delete()', function() {
 
 		beforeEach(function() {
 			return User.create().then(function() {
@@ -183,35 +229,13 @@ describe('MySQL Collection instance', function() {
 			return User.destroy();
 		});
 
-		it('should return an array of User model objects', function() {
-
-			return expect(User.find().then(function(results) {
-				return dejavu.instanceOf(results[0], User);
-			}))
-					.to.eventually.be.true;
-
-		});
-
-	});
-
-	describe('#findOne()', function() {
-
-		beforeEach(function() {
-			return User.create().then(function() {
-				return user.save();
-			});
-		});
-
-		afterEach(function() {
-			return User.destroy();
-		});
-
-		it('should return a single User model object', function() {
+		it('should remove the object from the database', function() {
 
 			return expect(User.findOne().then(function(result) {
-				return dejavu.instanceOf(result, User);
-			}))
-					.to.eventually.be.true;
+				return result.delete().then(function() {
+					return User.findOne();
+				});
+			})).to.eventually.be.null;
 
 		});
 
