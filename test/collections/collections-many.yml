@@ -1,6 +1,5 @@
 UserProject:
   type: connection
-  manyToMany: true
-  from: User
-  to: Project
+  parent: User
+  child: Project
   tableName: user_project
