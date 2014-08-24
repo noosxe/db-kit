@@ -1,13 +1,13 @@
 {
 	"name": "db-kit",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"description": "Easy life ORM for node",
 	"author": "Levon Kirakosyan <noosx.e@gmail.com>",
 	"license": "MIT",
 	"main": "index.js",
 	"dependencies": {
-		"db-kit.query": "0.1.1",
-		"db-kit.schema": "0.1.4",
+		"db-kit.query": "0.1.4",
+		"db-kit.schema": "0.1.5",
 		"db-kit.connection-mysql": "0.1.1",
 		"katsu-dot": "0.1.0",
 		"lodash": "2.4.1",
