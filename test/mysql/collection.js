@@ -68,6 +68,46 @@ kit.setup().then(function() {
 
 		});
 
+		describe('#empty()', function() {
+
+		});
+
+		describe('#find()', function() {
+
+		});
+
+		describe('#findOne()', function() {
+
+		});
+
+		describe('#update()', function() {
+
+		});
+
+		describe('#getChildrenOf()', function() {
+
+		});
+
+		describe('#getDescendantsOf()', function() {
+
+		});
+
+	});
+
+	describe('MySQL Collection instance', function() {
+
+		describe('#save()', function() {
+
+		});
+
+		describe('#reload()', function() {
+
+		});
+
+		describe('#delete()', function() {
+
+		});
+
 	});
 
 });
