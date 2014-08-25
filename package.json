@@ -1,12 +1,12 @@
 {
 	"name": "db-kit",
-	"version": "0.2.7",
+	"version": "0.2.8",
 	"description": "Easy life ORM for node",
 	"author": "Levon Kirakosyan <noosx.e@gmail.com>",
 	"license": "MIT",
 	"main": "index.js",
 	"dependencies": {
-		"db-kit.query": "0.1.9",
+		"db-kit.query": "0.1.10",
 		"db-kit.schema": "0.1.8",
 		"db-kit.connection-mysql": "0.1.1",
 		"katsu-dot": "0.1.0",
@@ -15,7 +15,8 @@
 		"bluebird": "2.1.2",
 		"dejavu": "0.4.4",
 		"mysql2": "0.12.3",
-		"moment": "2.8.2"
+		"moment": "2.8.2",
+		"uuid": "1.4.1"
 	},
 	"devDependencies": {
 		"pg": "3.3.0",
