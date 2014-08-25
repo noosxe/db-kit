@@ -9,9 +9,7 @@ User:
     active: bool
     firstName: string
     lastName: string
-    bio:
-      type: text
-      optional: true
+    bio: text
     balance: double
   options:
     timestamps: true

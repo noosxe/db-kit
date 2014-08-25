@@ -70,9 +70,37 @@ kit.setup().then(function() {
 
 		describe('#empty()', function() {
 
+			beforeEach(function() {
+				return User.create().then(function() {
+					return kit.query('INSERT INTO `User` (`email`) VALUES ("example@example.com")');
+				});
+			});
+
+			it('should remove all the rows from the table', function() {
+				return expect(User.empty().then(function() {
+					return kit.query('SELECT * FROM `User`');
+				})).to.eventually.have.length(0);
+			});
+
 		});
 
 		describe('#find()', function() {
+
+			beforeEach(function() {
+				return User.create();
+			});
+
+			afterEach(function() {
+				return User.destroy();
+			});
+
+			it('should return all rows if called without constraints', function() {
+				return expect(kit.query('INSERT INTO `User` (`email`) VALUES ("example@example.com"), ("other@example.com")').then(function() {
+					return User.find();
+				})).to.eventually.have.length(2);
+			});
+
+
 
 		});
 
@@ -97,6 +125,22 @@ kit.setup().then(function() {
 	describe('MySQL Collection instance', function() {
 
 		describe('#save()', function() {
+
+			beforeEach(function() {
+				return User.create();
+			});
+
+			afterEach(function() {
+				return User.destroy();
+			});
+
+			it('should save a single object', function() {
+				var user = new User({ email: 'example@example.com' });
+
+				return expect(user.save().then(function() {
+					return kit.query('SELECT * FROM `User`');
+				})).to.eventually.have.length(1);
+			});
 
 		});
 
