@@ -88,7 +88,7 @@ describe('MySQL adapter', function() {
 
 			return expect(my.loadCollections().then(my.prepareSchema.bind(my)).then(function() {
 				return my.schema.connections;
-			})).to.eventually.have.keys(['UserProject']);
+			})).to.eventually.have.keys(['UserProjects']);
 
 		});
 

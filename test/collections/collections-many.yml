@@ -1,6 +1,0 @@
-UserProject:
-  type: connection
-  parent: $User
-  child: $Project
-  accessor: projects
-  tableName: user_project

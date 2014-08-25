@@ -15,3 +15,16 @@ User:
     balance: double
   options:
     timestamps: true
+
+Project:
+  type: collection
+  fields:
+    name: string
+    priority: int
+    supervisor: $User
+
+UserProjects:
+  type: connection
+  parent: $User
+  child: $Project
+  accessor: projects

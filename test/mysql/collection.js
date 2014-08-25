@@ -1,241 +1,70 @@
 "use strict";
 
+var fs                = require('fs');
+var path              = require('path');
 var dejavu            = require('dejavu');
 var chai              = require('chai');
 var chaiAsPromised    = require("chai-as-promised");
 chai.use(chaiAsPromised);
 var expect            = chai.expect;
-var CollectionFactory = require('../../lib/adapters/mysql/collectionFactory.js');
-var Collection        = require('../../lib/adapters/mysql/collection.js');
-var Connection        = require('db-kit.connection-mysql');
-var connection        = Connection.instance({
+var Kit               = require('./../../index.js');
+
+var conf = {
+	dbuser: 'root',
+	dbpass: '',
+	dbname: 'test'
+};
+
+var cnfFile = path.join(__dirname, '/../.test.json');
+
+if (fs.existsSync(cnfFile)) {
+	conf = require(cnfFile);
+}
+
+var kit = Kit.instance({
+	adapter: 'mysql',
 	host: 'localhost',
-	port: 3306,
-	user: 'root',
-	password: '',
-	database: 'test',
-	charset: 'UTF8_UNICODE_CI',
-	debug: false,
-	string: 'mysql://root:@localhost:3306/test?&charset=UTF8_UNICODE_CI'
+	user: conf.dbuser,
+	password: conf.dbpass,
+	database: conf.dbname,
+	collections: path.join(__dirname, '/../collections')
 });
 
-var User = CollectionFactory.build({
-	fields: {
-		email: {
-			type: 'STRING',
-			primary: true,
-			autoIncrement: false,
-			optional: false,
-			readOnly: false,
-			hidden: false,
-			service: false
-		},
-		password: {
-			type: 'STRING',
-			length: 50,
-			primary: false,
-			autoIncrement: false,
-			optional: false,
-			readOnly: false,
-			hidden: false,
-			service: false
-		},
-		serial: {
-			type: 'STRING',
-			primary: false,
-			autoIncrement: false,
-			optional: false,
-			readOnly: true,
-			hidden: false,
-			service: false
-		}
-	},
-	options: {
-		timestamps: true,
-		collectionName: 'User'
-	},
-	primaryKey: 'email'
-}, {
-	connection: connection
-});
+kit.setup().then(function() {
+	var User = kit.schema.collections.User;
+	var Project = kit.schema.collections.Project;
 
-var user = new User({
-	email: 'example@example.com',
-	password: 'secret',
-	serial: 'abcdefg'
-});
+	describe('#MySQL Collection', function() {
 
-describe('MySQL Collection', function() {
+		describe('#create()', function() {
 
-	describe('#create()', function() {
-
-		beforeEach(function() {
-			return connection.query('DROP TABLE IF EXISTS `User`');
-		});
-
-		afterEach(function() {
-			return connection.query('DROP TABLE IF EXISTS `User`');
-		});
-
-		it('should create collection table', function() {
-			return expect(User.create().then(function() {
-				return connection.query('SELECT * FROM information_schema.tables WHERE table_schema = "test" AND table_name = "User" LIMIT 1');
-			})).to.eventually.have.length(1);
-		});
-
-	});
-
-	describe('#destroy()', function() {
-
-		beforeEach(function() {
-			return User.create();
-		});
-
-		afterEach(function() {
-			return connection.query('DROP TABLE IF EXISTS `User`');
-		});
-
-		it('should destroy collection table', function() {
-			return expect(User.destroy().then(function() {
-				return connection.query('SELECT * FROM information_schema.tables WHERE table_schema = "test" AND table_name = "User" LIMIT 1');
-			})).to.eventually.have.length(0);
-		});
-
-	});
-
-	describe('#empty()', function() {
-
-		beforeEach(function() {
-			return User.create().then(function() {
-				return connection.query('INSERT INTO `User` (`email`, `password`, `serial`) VALUES ("example@example.com", "secret", "abcdefg") ');
+			beforeEach(function() {
+				return kit.query('DROP TABLE IF EXISTS `User`');
 			});
-		});
 
-		afterEach(function() {
-			return User.destroy();
-		});
-
-		it('should truncate the collection table', function() {
-			return expect(User.empty().then(function() {
-				return connection.query('SELECT * FROM `User`');
-			})).to.eventually.have.length(0);
-		});
-
-	});
-
-	describe('#find()', function() {
-
-		beforeEach(function() {
-			return User.create().then(function() {
-				return user.save();
+			afterEach(function() {
+				return kit.query('DROP TABLE IF EXISTS `User`');
 			});
-		});
 
-		afterEach(function() {
-			return User.destroy();
-		});
-
-		it('should return an array of User model objects', function() {
-
-			return expect(User.find().then(function(results) {
-				return dejavu.instanceOf(results[0], User);
-			}))
-					.to.eventually.be.true;
-
-		});
-
-	});
-
-	describe('#findOne()', function() {
-
-		beforeEach(function() {
-			return User.create().then(function() {
-				return user.save();
+			it('should create User table', function() {
+				return expect(User.create().then(function() {
+					return kit.query('SHOW TABLES LIKE "User"');
+				})).to.eventually.have.length(1);
 			});
-		});
-
-		afterEach(function() {
-			return User.destroy();
-		});
-
-		it('should return a single User model object', function() {
-
-			return expect(User.findOne().then(function(result) {
-				return dejavu.instanceOf(result, User);
-			}))
-					.to.eventually.be.true;
 
 		});
 
-	});
+		describe('#destroy()', function() {
 
-});
-
-describe('MySQL Collection instance', function() {
-
-	it('should have required field properties', function() {
-
-		expect(user).to.have.property('email');
-		expect(user).to.have.property('password');
-		expect(user).to.have.property('serial');
-
-	});
-
-	it('should throw exception when trying to set readOnly property', function() {
-
-		var action = function() {
-			user.serial = 'test';
-		};
-
-		expect(action).to.throw(Error);
-
-	});
-
-	describe('#save()', function() {
-
-		beforeEach(function() {
-			return User.create();
-		});
-
-		afterEach(function() {
-			return User.destroy();
-		});
-
-		it('should save the object', function() {
-
-			return expect(user.save().then(function() {
-				return connection.query('SELECT * FROM `User`');
-			})).to.eventually.be.deep.equal([
-					{
-						email: 'example@example.com',
-						password: 'secret',
-						serial: 'abcdefg'
-					}
-				]);
-
-		});
-
-	});
-
-	describe('#delete()', function() {
-
-		beforeEach(function() {
-			return User.create().then(function() {
-				return user.save();
+			beforeEach(function() {
+				return User.create();
 			});
-		});
 
-		afterEach(function() {
-			return User.destroy();
-		});
-
-		it('should remove the object from the database', function() {
-
-			return expect(User.findOne().then(function(result) {
-				return result.delete().then(function() {
-					return User.findOne();
-				});
-			})).to.eventually.be.null;
+			it('should drop the User table', function() {
+				return expect(User.destroy().then(function() {
+					return kit.query('SHOW TABLES LIKE "User"');
+				})).to.eventually.have.length(0);
+			});
 
 		});
 

@@ -1,8 +1,0 @@
-Project:
-  type: collection
-  fields:
-    name: string
-    startDate: date
-    progress: double
-  options:
-    timestamps: true
