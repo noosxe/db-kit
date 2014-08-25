@@ -142,13 +142,36 @@ kit.setup().then(function() {
 				})).to.eventually.have.length(1);
 			});
 
+			it('should assign autoincrement id to saved object', function() {
+				var user = new User({ email: 'example@example.com' });
+				return expect(user.save().then(function() {
+					return user.id;
+				})).to.eventually.equal(1);
+			});
+
 		});
 
 		describe('#reload()', function() {
 
+			beforeEach(function() {
+				return User.create();
+			});
+
+			afterEach(function() {
+				return User.destroy();
+			});
+
 		});
 
 		describe('#delete()', function() {
+
+			beforeEach(function() {
+				return User.create();
+			});
+
+			afterEach(function() {
+				return User.destroy();
+			});
 
 		});
 
