@@ -6,8 +6,8 @@
 	"license": "MIT",
 	"main": "index.js",
 	"dependencies": {
-		"db-kit.query": "0.1.12",
-		"db-kit.schema": "0.1.10",
+		"db-kit.query": "0.1.13",
+		"db-kit.schema": "0.1.11",
 		"db-kit.connection-mysql": "0.1.1",
 		"katsu-dot": "0.1.0",
 		"lodash": "2.4.1",
