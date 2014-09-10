@@ -1,6 +1,6 @@
 {
 	"name": "db-kit",
-	"version": "0.2.24",
+	"version": "0.2.25",
 	"description": "Easy life ORM for node",
 	"author": "Levon Kirakosyan <noosx.e@gmail.com>",
 	"license": "MIT",
