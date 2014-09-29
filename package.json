@@ -1,25 +1,25 @@
 {
 	"name": "db-kit",
-	"version": "0.2.27",
+	"version": "0.2.28",
 	"description": "Easy life ORM for node",
 	"author": "Levon Kirakosyan <noosx.e@gmail.com>",
 	"license": "MIT",
 	"main": "index.js",
 	"dependencies": {
-		"db-kit.query": "0.1.13",
-		"db-kit.schema": "0.1.13",
+		"db-kit.query": "0.1.14",
+		"db-kit.schema": "0.1.15",
 		"db-kit.connection-mysql": "0.1.1",
 		"katsu-dot": "0.1.0",
 		"lodash": "2.4.1",
 		"async": "0.9.0",
-		"bluebird": "2.3.2",
+		"bluebird": "2.3.4",
 		"dejavu": "0.4.7",
 		"mysql2": "0.12.5",
 		"moment": "2.8.3",
-		"uuid": "1.4.1"
+		"uuid": "2.0.1"
 	},
 	"devDependencies": {
-		"mocha": "1.20.1",
+		"mocha": "1.21.4",
 		"chai": "1.9.1",
 		"chai-as-promised": "4.1.1",
 		"chai-fuzzy": "1.4.0"
