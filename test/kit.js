@@ -13,6 +13,12 @@ var _ = require('lodash');
 
 describe('Kit', function() {
 
+	it('should have #instance() method', function() {
+
+		expect(Kit).itself.to.respondTo('instance');
+
+	});
+
 	describe('#instance()', function() {
 
 		it('should return an instance of Kit', function() {
@@ -77,6 +83,30 @@ describe('Kit', function() {
 			expect(kit.setup().then(function() {
 				return _.keys(kit.schema.collections);
 			})).to.eventually.be.deep.equal(['User', 'Project']);
+
+		});
+
+	});
+
+	describe('Instance', function() {
+
+		var kit = Kit.instance();
+
+		it('should have #setup() method', function() {
+
+			expect(kit).to.respondTo('setup');
+
+		});
+
+		it('should have #query() method', function() {
+
+			expect(kit).to.respondTo('query');
+
+		});
+
+		it('should have #sync() method', function() {
+
+			expect(kit).to.respondTo('sync');
 
 		});
 

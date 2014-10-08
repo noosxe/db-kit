@@ -36,87 +36,93 @@ kit.setup().then(function() {
 
 	describe('#MySQL Collection', function() {
 
-		describe('#create()', function() {
+		it('should have #getFields() method', function() {
 
-			beforeEach(function() {
-				return kit.query('DROP TABLE IF EXISTS `User`');
-			});
-
-			afterEach(function() {
-				return kit.query('DROP TABLE IF EXISTS `User`');
-			});
-
-			it('should create User table', function() {
-				return expect(User.create().then(function() {
-					return kit.query('SHOW TABLES LIKE "User"');
-				})).to.eventually.have.length(1);
-			});
+			expect(User).itself.to.respondTo('getFields');
 
 		});
 
-		describe('#destroy()', function() {
+		it('should have #getCollectionName() method', function() {
 
-			beforeEach(function() {
-				return User.create();
-			});
-
-			it('should drop the User table', function() {
-				return expect(User.destroy().then(function() {
-					return kit.query('SHOW TABLES LIKE "User"');
-				})).to.eventually.have.length(0);
-			});
+			expect(User).itself.to.respondTo('getCollectionName');
 
 		});
 
-		describe('#empty()', function() {
+		it('should have #getTableName() method', function() {
 
-			beforeEach(function() {
-				return User.create().then(function() {
-					return kit.query('INSERT INTO `User` (`email`) VALUES ("example@example.com")');
-				});
-			});
-
-			it('should remove all the rows from the table', function() {
-				return expect(User.empty().then(function() {
-					return kit.query('SELECT * FROM `User`');
-				})).to.eventually.have.length(0);
-			});
+			expect(User).itself.to.respondTo('getTableName');
 
 		});
 
-		describe('#find()', function() {
+		it('should have #getPrimaryKey() method', function() {
 
-			beforeEach(function() {
-				return User.create();
-			});
-
-			afterEach(function() {
-				return User.destroy();
-			});
-
-			it('should return all rows if called without constraints', function() {
-				return expect(kit.query('INSERT INTO `User` (`email`) VALUES ("example@example.com"), ("other@example.com")').then(function() {
-					return User.find();
-				})).to.eventually.have.length(2);
-			});
-
-
+			expect(User).itself.to.respondTo('getPrimaryKey');
 
 		});
 
-		describe('#findOne()', function() {
+		it('should have #getDependencies() method', function() {
+
+			expect(User).itself.to.respondTo('getDependencies');
 
 		});
 
-		describe('#update()', function() {
+		it('should have #sync() method', function() {
+
+			expect(User).itself.to.respondTo('sync');
 
 		});
 
-		describe('#getChildrenOf()', function() {
+		it('should have #create() method', function() {
+
+			expect(User).itself.to.respondTo('create');
 
 		});
 
-		describe('#getDescendantsOf()', function() {
+		it('should have #destroy() method', function() {
+
+			expect(User).itself.to.respondTo('destroy');
+
+		});
+
+		it('should have #empty() method', function() {
+
+			expect(User).itself.to.respondTo('empty');
+
+		});
+
+		it('should have #find() method', function() {
+
+			expect(User).itself.to.respondTo('find');
+
+		});
+
+		it('should have #findOne() method', function() {
+
+			expect(User).itself.to.respondTo('find');
+
+		});
+
+		it('should have #update() method', function() {
+
+			expect(User).itself.to.respondTo('update');
+
+		});
+
+		it('should have #getChildrenOf() method', function() {
+
+			expect(User).itself.to.respondTo('getChildrenOf');
+
+		});
+
+		it('should have #getDescendantsOf() method', function() {
+
+			expect(User).itself.to.respondTo('getDescendantsOf');
+
+		});
+
+		it('should have #getLinkedTo() method', function() {
+
+			expect(User).itself.to.respondTo('getLinkedTo');
 
 		});
 
@@ -124,54 +130,75 @@ kit.setup().then(function() {
 
 	describe('MySQL Collection instance', function() {
 
-		describe('#save()', function() {
+		it('should have #getCollectionName() method', function() {
 
-			beforeEach(function() {
-				return User.create();
-			});
-
-			afterEach(function() {
-				return User.destroy();
-			});
-
-			it('should save a single object', function() {
-				var user = new User({ email: 'example@example.com' });
-
-				return expect(user.save().then(function() {
-					return kit.query('SELECT * FROM `User`');
-				})).to.eventually.have.length(1);
-			});
-
-			it('should assign autoincrement id to saved object', function() {
-				var user = new User({ email: 'example@example.com' });
-				return expect(user.save().then(function() {
-					return user.id;
-				})).to.eventually.equal(1);
-			});
+			expect(User).to.respondTo('getCollectionName');
 
 		});
 
-		describe('#reload()', function() {
+		it('should have #getValues() method', function() {
 
-			beforeEach(function() {
-				return User.create();
-			});
-
-			afterEach(function() {
-				return User.destroy();
-			});
+			expect(User).to.respondTo('getValues');
 
 		});
 
-		describe('#delete()', function() {
+		it('should have #isDirty() method', function() {
 
-			beforeEach(function() {
-				return User.create();
-			});
+			expect(User).to.respondTo('isDirty');
 
-			afterEach(function() {
-				return User.destroy();
-			});
+		});
+
+		it('should have #toJSON() method', function() {
+
+			expect(User).to.respondTo('toJSON');
+
+		});
+
+		it('should have #toJSONString() method', function() {
+
+			expect(User).to.respondTo('toJSONString');
+
+		});
+
+		it('should have #save() method', function() {
+
+			expect(User).to.respondTo('save');
+
+		});
+
+		it('should have #reload() method', function() {
+
+			expect(User).to.respondTo('reload');
+
+		});
+
+		it('should have #delete() method', function() {
+
+			expect(User).to.respondTo('delete');
+
+		});
+
+		it('should have #onAfterLoad() method', function() {
+
+			expect(User).to.respondTo('onAfterLoad');
+
+		});
+
+		it('should have #onBeforeSave() method', function() {
+
+			expect(User).to.respondTo('onBeforeSave');
+
+		});
+
+		it('should have #onAfterSave() method', function() {
+
+			expect(User).to.respondTo('onAfterSave');
+
+		});
+
+		it('should have #onAfterSave() method', function() {
+
+			expect(User).to.respondTo('onAfterSave');
 
 		});
 

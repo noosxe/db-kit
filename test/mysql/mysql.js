@@ -11,6 +11,12 @@ var MySQL = require('../../lib/adapters/mysql/index.js');
 
 describe('MySQL adapter', function() {
 
+	it('should have #instance() method', function() {
+
+		expect(MySQL).itself.to.respondTo('instance');
+
+	});
+
 	describe('#instance()', function() {
 
 		it('should return an instance of MySQL', function() {
@@ -59,36 +65,78 @@ describe('MySQL adapter', function() {
 
 	});
 
-	describe('#loadCollections()', function() {
+	describe('Instance', function() {
 
-		it('should load collection definitions from specified location', function() {
+		var mysql = MySQL.instance();
 
-			return expect(MySQL.instance({ collections: collectionsDir }).loadCollections().then(function(schema) {
-				return schema.collections;
-			})).to.eventually.have.keys(['User', 'Project']);
+		it('should have #loadCollections() method', function() {
 
-		});
-
-	});
-
-	describe('#prepareSchema()', function() {
-
-		it('should convert collections to appropriate classes', function() {
-			var my = MySQL.instance({ collections: collectionsDir });
-
-			return expect(my.loadCollections().then(my.prepareSchema.bind(my)).then(function() {
-				return my.schema.collections;
-			})).to.eventually.have.keys(['User', 'Project']);
+			expect(mysql).to.respondTo('loadCollections');
 
 		});
 
-		it('should generate connections', function() {
+		it('should have #prepareSchema() method', function() {
 
-			var my = MySQL.instance({ collections: collectionsDir });
+			expect(mysql).to.respondTo('prepareSchema');
 
-			return expect(my.loadCollections().then(my.prepareSchema.bind(my)).then(function() {
-				return my.schema.connections;
-			})).to.eventually.have.keys(['UserProjects']);
+		});
+
+		it('should have #setup() method', function() {
+
+			expect(mysql).to.respondTo('setup');
+
+		});
+
+		it('should have #query() method', function() {
+
+			expect(mysql).to.respondTo('query');
+
+		});
+
+		it('should have #sync() method', function() {
+
+			expect(mysql).to.respondTo('sync');
+
+		});
+
+		it('should have #_genConnectionSchema() method', function() {
+
+			expect(mysql).to.respondTo('_genConnectionSchema');
+
+		});
+
+		describe('#loadCollections()', function() {
+
+			it('should load collection definitions from specified location', function() {
+
+				return expect(MySQL.instance({ collections: collectionsDir }).loadCollections().then(function(schema) {
+					return schema.collections;
+				})).to.eventually.have.keys(['User', 'Project']);
+
+			});
+
+		});
+
+		describe('#prepareSchema()', function() {
+
+			it('should convert collections to appropriate classes', function() {
+				var my = MySQL.instance({ collections: collectionsDir });
+
+				return expect(my.loadCollections().then(my.prepareSchema.bind(my)).then(function() {
+					return my.schema.collections;
+				})).to.eventually.have.keys(['User', 'Project']);
+
+			});
+
+			it('should generate connections', function() {
+
+				var my = MySQL.instance({ collections: collectionsDir });
+
+				return expect(my.loadCollections().then(my.prepareSchema.bind(my)).then(function() {
+					return my.schema.connections;
+				})).to.eventually.have.keys(['UserProjects']);
+
+			});
 
 		});
 
