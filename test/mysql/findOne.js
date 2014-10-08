@@ -38,6 +38,24 @@ kit.setup().then(function() {
 
 		describe('#findOne()', function() {
 
+			beforeEach(function() {
+				return User.create();
+			});
+
+			afterEach(function() {
+				return User.destroy();
+			});
+
+			it('should return single rows if called without constraints', function() {
+				return expect(kit.query('INSERT INTO `User` (`email`) VALUES ("example@example.com"), ("other@example.com")').then(function() {
+					return User.findOne();
+				})).to.eventually.not.be.null;
+			});
+
+			it('should return null if table is empty', function() {
+				return expect(User.findOne()).to.eventually.be.null;
+			});
+
 		});
 
 	});

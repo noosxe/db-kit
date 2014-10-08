@@ -52,6 +52,10 @@ kit.setup().then(function() {
 				})).to.eventually.have.length(2);
 			});
 
+			it('should return empty array if table is empty', function() {
+				return expect(User.find()).to.eventually.have.length(0);
+			});
+
 		});
 
 	});

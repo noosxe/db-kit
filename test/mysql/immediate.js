@@ -34,30 +34,27 @@ kit.setup().then(function() {
 	var User = kit.schema.collections.User;
 	var Project = kit.schema.collections.Project;
 
-	describe('MySQL Collection instance', function() {
+	describe('#MySQL Collection', function() {
 
-		describe('#delete()', function() {
+		describe('#immediate()', function() {
 
 			beforeEach(function() {
-				return User.create().then(function() {
-					return User.immediate();
-				});
+				return User.create();
 			});
 
 			afterEach(function() {
 				return User.destroy();
 			});
 
-			it('should delete object from the table', function() {
-				return expect(User.find().then(function(results) {
-					return results[0].delete().then(function() {
-						return User.find();
-					});
-				})).to.eventually.have.length(0);
+			it('should immediately save newly created object to database', function() {
+				return expect(User.immediate({
+					email: 'example@example.com'
+				}).then(function() {
+					return User.find();
+				})).to.eventually.have.length(1);
 			});
 
 		});
 
 	});
-
 });
